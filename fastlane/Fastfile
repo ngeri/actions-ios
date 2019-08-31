@@ -1,0 +1,55 @@
+default_platform(:ios)
+
+SCHEME = "Actions-iOS"
+DESTINATION = "iPhone Xs"
+DERIVED_DATA_PATH = "DerivedData"
+REPORTS_PATH = "reports"
+UNIT_TESTS = ["Actions-iOSTests"]
+UI_TESTS = ["Actions-iOSUITests"]
+
+lane :build do
+	xcodebuild(
+		clean: true,
+		scheme: SCHEME,
+		destination: "platform=iOS Simulator,name=#{DESTINATION}",
+    	derivedDataPath: DERIVED_DATA_PATH,
+   		xcargs: "build-for-testing",
+   		)
+end
+
+lane :run_unit_tests do |options|
+	test(
+		only_testing: UNIT_TESTS,
+		)
+end
+
+lane :run_ui_tests do |options|
+	test(
+		only_testing: UI_TESTS,
+		)
+end
+
+private_lane :test do |options|
+	scan(
+		scheme: SCHEME,
+		derived_data_path: DERIVED_DATA_PATH, 
+		test_without_building: true, 
+		skip_build: true,
+		only_testing: options[:only_testing],
+		destination: "platform=iOS Simulator,name=#{DESTINATION}",
+	  	code_coverage: true,
+	  	output_directory: REPORTS_PATH,
+	  	)
+end
+
+lane :analyze do
+    swiftlint(
+    	output_file: "#{REPORTS_PATH}/swiftlint.txt",
+    	path: "Actions-iOS",
+    	ignore_exit_status: true,
+    	executable: "swiftlint/swiftlint"
+    	)
+end
+
+
+

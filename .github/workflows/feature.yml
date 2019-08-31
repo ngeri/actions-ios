@@ -1,0 +1,47 @@
+name: Feature
+
+on: push
+
+jobs:
+  build:
+    runs-on: macOS-10.14
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build the application
+      run: |
+        set -o pipefail && xcodebuild clean -scheme "Actions-iOS" -destination "platform=iOS Simulator,name=iPhone Xs" -derivedDataPath "DerivedData" build-for-testing | xcpretty --color --simple
+    - uses: actions/upload-artifact@master
+      with:
+        name: Products
+        path: DerivedData/Build/Products
+  analyze:
+    runs-on: macOS-10.14
+    steps:
+    - uses: actions/checkout@v1
+    - name: Analyze
+      run: |
+        mkdir -p reports
+        set -o pipefail && ./swiftlint/swiftlint lint --path Actions-iOS > reports/swiftlint.txt
+  unit-test:
+    runs-on: macOS-10.14
+    needs: build
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/download-artifact@master
+      with:
+        name: Products
+    - name: Run unit tests
+      run: |
+        set -o pipefail && xcodebuild test-without-building -xctestrun $(find . -type f -name "*.xctestrun") -destination 'platform=iOS Simulator,name=iPhone Xs' -enableCodeCoverage YES -only-testing:Actions-iOSTests | xcpretty --color --simple  --report html --output './reports/unit_tests.html' --report junit --output './reports/unit_tests.junit'
+  ui-test:
+    runs-on: macOS-10.14
+    needs: build
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/download-artifact@master
+      with:
+        name: Products
+    - name: Run unit tests
+      run: |
+        set -o pipefail && xcodebuild test-without-building -xctestrun $(find . -type f -name "*.xctestrun") -destination 'platform=iOS Simulator,name=iPhone Xs' -enableCodeCoverage YES -only-testing:Actions-iOSUITests | xcpretty  --color --simple --report html --output './reports/ui_tests.html' --report junit --output './reports/ui_tests.junit'
+      
