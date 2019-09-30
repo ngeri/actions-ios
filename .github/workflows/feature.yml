@@ -1,6 +1,6 @@
 name: Feature
 
-on: push
+on: pull_request
 
 jobs:
   build:
@@ -25,7 +25,7 @@ jobs:
     - name: Danger
       run: |
         bundle install
-        bundle exec danger pr --use-pr=https://github.com/ngeri/action-ios/pull/1
+        bundle exec danger --fail-on-errors=true
       env:
         DANGER_GITHUB_API_TOKEN: ${{ secrets.DANGER_GITHUB_API_TOKEN }}
 
