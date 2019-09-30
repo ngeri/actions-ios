@@ -4,8 +4,9 @@ disabled_rules:
 opt_in_rules:
   - sorted_imports
 
-included:
-  - Actions-iOS
+excluded:
+  - Actions-iOSTests
+  - Actions-iOSUITests
 
 attributes:
   severity: error
@@ -63,7 +64,7 @@ legacy_constructor:
 legacy_nsgeometry_functions:
   severity: error
 line_length:
-  - 150 #warning
+  - 122 #warning
 mark:
   severity: error
 nesting:
