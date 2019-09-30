@@ -22,14 +22,12 @@ jobs:
     steps:
     - name: Checkout project 
       uses: actions/checkout@v1
-    - name: Analyze
-      run: |
-        mkdir -p reports
-        set -o pipefail && ./swiftlint/swiftlint lint --path Actions-iOS > reports/swiftlint.txt
     - name: Danger
-      uses: danger/swift@2.0.1
+      run: |
+        bundle install
+        bundle exec danger pr
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        DANGER_GITHUB_API_TOKEN: ${{ secrets.DANGER_GITHUB_API_TOKEN }}
 
   unit-test:
     runs-on: macOS-10.14
