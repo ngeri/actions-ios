@@ -5,9 +5,6 @@ PROJECT = "Actions-iOS.xcodeproj"
 swiftlint.lint_all_files = true
 swiftlint.lint_files inline_mode: true
 
-# All file headers should be removed
-clorox.check
-
 # Code coverage check
 xcov.report(
    scheme: SCHEME,

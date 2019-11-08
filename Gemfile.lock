@@ -30,8 +30,6 @@ GEM
       no_proxy_fix
       octokit (~> 4.7)
       terminal-table (~> 1)
-    danger-clorox (2.0.2)
-      danger
     danger-swiftlint (0.23.0)
       danger
       rake (> 10)
@@ -206,7 +204,6 @@ PLATFORMS
 
 DEPENDENCIES
   danger
-  danger-clorox
   danger-swiftlint
   danger-xcov
 
