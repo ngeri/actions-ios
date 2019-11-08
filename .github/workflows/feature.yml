@@ -4,7 +4,7 @@ on: pull_request
 
 jobs:
   build:
-    runs-on: macOS-10.14
+    runs-on: macOS-latest
     steps:
     - name: Checkout project  
       uses: actions/checkout@v1
@@ -18,7 +18,7 @@ jobs:
         path: DerivedData/Build/Products
 
   analyze:
-    runs-on: macOS-10.14
+    runs-on: macOS-latest
     steps:
     - name: Checkout project 
       uses: actions/checkout@v1
@@ -30,7 +30,7 @@ jobs:
         DANGER_GITHUB_API_TOKEN: ${{ secrets.DANGER_GITHUB_API_TOKEN }}
 
   unit-test:
-    runs-on: macOS-10.14
+    runs-on: macOS-latest
     needs: build
     steps:
     - name: Checkout project
@@ -44,7 +44,7 @@ jobs:
         set -o pipefail && xcodebuild test-without-building -xctestrun $(find . -type f -name "*.xctestrun") -destination 'platform=iOS Simulator,name=iPhone 11 Pro' -enableCodeCoverage YES -only-testing:Actions-iOSTests | xcpretty --color --simple  --report html --output './reports/unit_tests.html' --report junit --output './reports/unit_tests.junit'
 
   ui-test:
-    runs-on: macOS-10.14
+    runs-on: macOS-latest
     needs: build
     steps:
     - name: Checkout project 
