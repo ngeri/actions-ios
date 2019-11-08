@@ -17,7 +17,7 @@ class GithubActionsViewController: UIViewController {
             return nil
         }
     }
-    
+
     func someFunctionWhichIsNotTestedSoItWillRuinTheCodeCoverage() -> String {
         return "🥺"
     }
