@@ -4,56 +4,76 @@ on: pull_request
 
 jobs:
   build:
+    env:
+      SCHEME: "Actions-iOS"
+      DEVICE: "iPhone 11 Pro"
+      DERIVED_DATA_PATH: "DerivedData"
     runs-on: macOS-latest
     steps:
-    - name: Checkout project  
+    - name: Checkout project
       uses: actions/checkout@v1
     - name: Build application
       run: |
-        set -o pipefail && xcodebuild clean -scheme "Actions-iOS" -destination "platform=iOS Simulator,name=iPhone 11 Pro" -derivedDataPath "DerivedData" build-for-testing | xcpretty --color --simple
-    - name: Upload artifacts
+        set -o pipefail && xcodebuild clean -scheme $SCHEME -destination "platform=iOS Simulator,name=$DEVICE" -derivedDataPath $DERIVED_DATA_PATH build-for-testing | xcpretty --color --simple
+    - name: Upload products
       uses: actions/upload-artifact@master
       with:
         name: Products
         path: DerivedData/Build/Products
 
-  analyze:
-    runs-on: macOS-latest
-    steps:
-    - name: Checkout project 
-      uses: actions/checkout@v1
-    - name: Danger
-      run: |
-        bundle install
-        bundle exec danger --fail-on-errors=true
-      env:
-        DANGER_GITHUB_API_TOKEN: ${{ secrets.DANGER_GITHUB_API_TOKEN }}
-
   unit-test:
+    env:
+      DEVICE: "iPhone 11 Pro"
+      DERIVED_DATA_PATH: "DerivedData"
     runs-on: macOS-latest
     needs: build
     steps:
     - name: Checkout project
       uses: actions/checkout@v1
-    - name: Download artifacts 
+    - name: Download products
       uses: actions/download-artifact@master
       with:
         name: Products
-    - name: Run Unit tests
+    - name: Run unit tests
       run: |
-        set -o pipefail && xcodebuild test-without-building -xctestrun $(find . -type f -name "*.xctestrun") -destination 'platform=iOS Simulator,name=iPhone 11 Pro' -enableCodeCoverage YES -only-testing:Actions-iOSTests | xcpretty --color --simple  --report html --output './reports/unit_tests.html' --report junit --output './reports/unit_tests.junit'
+        set -o pipefail && xcodebuild test-without-building -xctestrun $(find . -type f -name "*.xctestrun") -destination "platform=iOS Simulator,name=$DEVICE" -derivedDataPath $DERIVED_DATA_PATH -enableCodeCoverage YES -only-testing:Actions-iOSTests | xcpretty --color --simple  --report html --output "./reports/unit_tests.html" --report junit --output "./reports/unit_tests.junit"
+    - name: Upload test logs
+      uses: actions/upload-artifact@master
+      with:
+        name: TestLogs
+        path: DerivedData/Logs/Test
 
   ui-test:
+    env:
+      DEVICE: "iPhone 11 Pro"
+      DERIVED_DATA_PATH: "DerivedData"
     runs-on: macOS-latest
     needs: build
     steps:
     - name: Checkout project 
       uses: actions/checkout@v1
-    - name: Download artifacts
+    - name: Download products
       uses: actions/download-artifact@master
       with:
         name: Products
     - name: Run UI tests
       run: |
-        set -o pipefail && xcodebuild test-without-building -xctestrun $(find . -type f -name "*.xctestrun") -destination 'platform=iOS Simulator,name=iPhone 11 Pro' -enableCodeCoverage YES -only-testing:Actions-iOSUITests | xcpretty  --color --simple --report html --output './reports/ui_tests.html' --report junit --output './reports/ui_tests.junit'
+        set -o pipefail && xcodebuild test-without-building -xctestrun $(find . -type f -name "*.xctestrun") -destination "platform=iOS Simulator,name=$DEVICE" -derivedDataPath $DERIVED_DATA_PATH -enableCodeCoverage YES -only-testing:Actions-iOSUITests | xcpretty  --color --simple --report html --output "./reports/ui_tests.html" --report junit --output "./reports/ui_tests.junit"
       
+  analyze:
+    env:
+      DANGER_GITHUB_API_TOKEN: ${{ secrets.DANGER_GITHUB_API_TOKEN }}
+    runs-on: macOS-latest
+    needs: unit-test
+    steps:
+    - name: Checkout project
+      uses: actions/checkout@v1
+    - name: Download test logs
+      uses: actions/download-artifact@master
+      with:
+        name: TestLogs
+
+    - name: Danger
+      run: |
+        bundle install
+        bundle exec danger --fail-on-errors=true
