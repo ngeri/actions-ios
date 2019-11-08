@@ -8,5 +8,5 @@ xcov.report(
    scheme: SCHEME,
    project: PROJECT,
    xccov_file_direct_path: Dir.glob("./**/*.xcresult").first,
-   minimum_coverage_percentage: 91.0
+   minimum_coverage_percentage: 90.0
 )

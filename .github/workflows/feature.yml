@@ -51,7 +51,7 @@ jobs:
     env:
       DEVICE: "iPhone 11 Pro"
       DERIVED_DATA_PATH: "DerivedData"
-      UI_TEST_TARGET: "Actions-iOSTests"
+      UI_TEST_TARGET: "Actions-iOSUITests"
     runs-on: macOS-latest
     needs: build
     steps:
