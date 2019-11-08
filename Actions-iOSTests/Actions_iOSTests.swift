@@ -36,4 +36,10 @@ class Actions_iOSTests: XCTestCase {
 
         XCTAssertNil(result, "'result' should be nil")
     }
+    
+    func testSomeFunctionWhichIsNotTestedSoItWillRuinTheCodeCoverage() {
+        let result = sut.someFunctionWhichIsNotTestedSoItWillRuinTheCodeCoverage()
+
+        XCTAssertEqual(result, "🥺")
+    }
 }
