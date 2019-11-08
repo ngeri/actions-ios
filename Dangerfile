@@ -6,7 +6,6 @@ swiftlint.lint_all_files = true
 swiftlint.lint_files inline_mode: true
 
 # All file headers should be removed
-clorox.level = "failure"
 clorox.check
 
 # Code coverage check
