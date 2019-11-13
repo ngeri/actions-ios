@@ -1,14 +1,14 @@
 //
-//  Actions_iOSUITests.swift
-//  Actions-iOSUITests
+//  ActionsUITests.swift
+//  ActionsUITests
 //
-//  Created by Németh Gergely on 2019. 08. 30..
+//  Created by Németh Gergely on 2019. 11. 13..
 //  Copyright © 2019. Németh Gergely. All rights reserved.
 //
 
 import XCTest
 
-class Actions_iOSUITests: XCTestCase {
+class ActionsUITests: XCTestCase {
 
     override func setUp() {
         continueAfterFailure = false
@@ -20,5 +20,4 @@ class Actions_iOSUITests: XCTestCase {
         app.buttons["Github Actions"].tap()
         XCTAssert(app.staticTexts["detail_label"].isHittable)
     }
-
 }

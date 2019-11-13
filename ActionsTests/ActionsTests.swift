@@ -1,15 +1,15 @@
 //
-//  Actions_iOSTests.swift
-//  Actions-iOSTests
+//  ActionsTests.swift
+//  ActionsTests
 //
-//  Created by Németh Gergely on 2019. 08. 30..
+//  Created by Németh Gergely on 2019. 11. 13..
 //  Copyright © 2019. Németh Gergely. All rights reserved.
 //
 
 import XCTest
-@testable import Actions_iOS
+@testable import Actions
 
-class Actions_iOSTests: XCTestCase {
+class ActionsTests: XCTestCase {
 
     var sut: GithubActionsViewController!
 
@@ -36,10 +36,11 @@ class Actions_iOSTests: XCTestCase {
 
         XCTAssertNil(result, "'result' should be nil")
     }
-    
+
     func testSomeFunctionWhichIsNotTestedSoItWillRuinTheCodeCoverage() {
         let result = sut.someFunctionWhichIsNotTestedSoItWillRuinTheCodeCoverage()
 
         XCTAssertEqual(result, "🥺")
     }
 }
+

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1030"
+   LastUpgradeVersion = "1120"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "255CD86B2319543500E370D7"
-               BuildableName = "Actions-iOS.app"
-               BlueprintName = "Actions-iOS"
-               ReferencedContainer = "container:Actions-iOS.xcodeproj">
+               BlueprintIdentifier = "2568752C237C7A77004D5C9E"
+               BuildableName = "Actions.app"
+               BlueprintName = "Actions"
+               ReferencedContainer = "container:Actions.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -26,41 +26,30 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      codeCoverageEnabled = "YES"
-      shouldUseLaunchSchemeArgsEnv = "YES">
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      codeCoverageEnabled = "YES">
       <Testables>
          <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "255CD87F2319543600E370D7"
-               BuildableName = "Actions-iOSTests.xctest"
-               BlueprintName = "Actions-iOSTests"
-               ReferencedContainer = "container:Actions-iOS.xcodeproj">
+               BlueprintIdentifier = "25687542237C7A78004D5C9E"
+               BuildableName = "ActionsTests.xctest"
+               BlueprintName = "ActionsTests"
+               ReferencedContainer = "container:Actions.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "255CD88A2319543600E370D7"
-               BuildableName = "Actions-iOSUITests.xctest"
-               BlueprintName = "Actions-iOSUITests"
-               ReferencedContainer = "container:Actions-iOS.xcodeproj">
+               BlueprintIdentifier = "2568754D237C7A78004D5C9E"
+               BuildableName = "ActionsUITests.xctest"
+               BlueprintName = "ActionsUITests"
+               ReferencedContainer = "container:Actions.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "255CD86B2319543500E370D7"
-            BuildableName = "Actions-iOS.app"
-            BlueprintName = "Actions-iOS"
-            ReferencedContainer = "container:Actions-iOS.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
-      <AdditionalOptions>
-      </AdditionalOptions>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
@@ -76,14 +65,12 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "255CD86B2319543500E370D7"
-            BuildableName = "Actions-iOS.app"
-            BlueprintName = "Actions-iOS"
-            ReferencedContainer = "container:Actions-iOS.xcodeproj">
+            BlueprintIdentifier = "2568752C237C7A77004D5C9E"
+            BuildableName = "Actions.app"
+            BlueprintName = "Actions"
+            ReferencedContainer = "container:Actions.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <AdditionalOptions>
-      </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -95,10 +82,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "255CD86B2319543500E370D7"
-            BuildableName = "Actions-iOS.app"
-            BlueprintName = "Actions-iOS"
-            ReferencedContainer = "container:Actions-iOS.xcodeproj">
+            BlueprintIdentifier = "2568752C237C7A77004D5C9E"
+            BuildableName = "Actions.app"
+            BlueprintName = "Actions"
+            ReferencedContainer = "container:Actions.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

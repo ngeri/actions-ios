@@ -6,8 +6,8 @@ jobs:
   build:
     name: Build
     env:
-      SCHEME: "Actions-iOS"
-      DEVICE: "iPhone 11 Pro"
+      SCHEME: "Actions"
+      DEVICE: "iPhone 11"
       DERIVED_DATA_PATH: "DerivedData"
     runs-on: macOS-latest
     steps:
@@ -25,9 +25,9 @@ jobs:
   unit_test:
     name: Unit test
     env:
-      DEVICE: "iPhone 11 Pro"
+      DEVICE: "iPhone 11"
       DERIVED_DATA_PATH: "DerivedData"
-      UNIT_TEST_TARGET: "Actions-iOSTests"
+      UNIT_TEST_TARGET: "ActionsTests"
     runs-on: macOS-latest
     needs: build
     steps:
@@ -49,9 +49,9 @@ jobs:
   ui_test:
     name: UI test
     env:
-      DEVICE: "iPhone 11 Pro"
+      DEVICE: "iPhone 11"
       DERIVED_DATA_PATH: "DerivedData"
-      UI_TEST_TARGET: "Actions-iOSUITests"
+      UI_TEST_TARGET: "ActionsUITests"
     runs-on: macOS-latest
     needs: build
     steps:

@@ -1,5 +1,5 @@
-SCHEME = "Actions-iOS"
-PROJECT = "Actions-iOS.xcodeproj"
+SCHEME = "Actions"
+PROJECT = "Actions.xcodeproj"
 
 # Swiftlint check
 swiftlint.lint_all_files = true
