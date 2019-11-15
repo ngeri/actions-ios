@@ -27,7 +27,7 @@ jobs:
         ./devops/signing_open.sh $B64_PROV $B64_CERT $P12PW $KCID $KCPW
     - name: Build archive
       run: |
-        set -o pipefail && xcodebuild -scheme $SCHEME -sdk iphoneos -configuration $CONFIGURATION archive -archivePath Archive.xcarchive
+        set -o pipefail && xcodebuild -scheme $SCHEME -sdk iphoneos -configuration $CONFIGURATION archive -archivePath Archive.xcarchive | xcpretty --color --simple
     - name: Close signing
       env:
         KCID: ${{ secrets.KCID }}
@@ -61,8 +61,7 @@ jobs:
         ./devops/signing_open.sh $B64_PROV $B64_CERT $P12PW $KCID $KCPW
     - name: Export ipa
       run: |
-        ls
-        set -o pipefail && xcodebuild -exportArchive -archivePath Archive -exportOptionsPlist ./devops/exportOptions.plist -exportPath ./build
+        set -o pipefail && xcodebuild -exportArchive -archivePath Archive -exportOptionsPlist ./devops/exportOptions.plist -exportPath ./build | xcpretty --color --simple
     - name: Close signing
       env:
         KCID: ${{ secrets.KCID }}
