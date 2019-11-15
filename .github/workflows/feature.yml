@@ -1,6 +1,11 @@
 name: Feature pipeline
 
-on: pull_request
+#on: pull_request
+
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   build:
