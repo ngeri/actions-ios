@@ -62,7 +62,7 @@ jobs:
     - name: Export ipa
       run: |
         ls
-        set -o pipefail && xcodebuild -exportArchive -archivePath Archive.xcarchive -exportOptionsPlist ./devops/exportOptions.plist -exportPath ./build
+        set -o pipefail && xcodebuild -exportArchive -archivePath Archive -exportOptionsPlist ./devops/exportOptions.plist -exportPath ./build
     - name: Close signing
       env:
         KCID: ${{ secrets.KCID }}
