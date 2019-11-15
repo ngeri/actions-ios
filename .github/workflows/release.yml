@@ -28,7 +28,8 @@ jobs:
         TMP_PROV="Prov.mobileprovision"
         TMP_CERT="Cert.p12"
         (echo $B64_PROV | base64 --decode) > $TMP_PROV
-        open $TMP_PROV
+        mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+        cp $TMP_PROV ~/Library/MobileDevice/Provisioning\ Profiles/$TMP_PROV
         (echo $B64_CERT | base64 --decode) > $TMP_CERT
         security create-keychain -p $KCPW $KCNAME
         security list-keychains -d user -s login.keychain $KCNAME
@@ -50,7 +51,7 @@ jobs:
     - name: Upload archive
       uses: actions/upload-artifact@v1
       with:
-        name: Archive
+        name: Archive.xcarchive
         path: Archive.xcarchive
 
 #  export:
