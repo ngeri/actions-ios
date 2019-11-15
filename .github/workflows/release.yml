@@ -24,20 +24,7 @@ jobs:
         KCID: ${{ secrets.KCID }}
         KCPW: ${{ secrets.KCPW }}
       run: |
-        KCNAME="$KCID.keychain"
-        TMP_PROV="Prov.mobileprovision"
-        TMP_CERT="Cert.p12"
-        (echo $B64_PROV | base64 --decode) > $TMP_PROV
-        mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-        cp $TMP_PROV ~/Library/MobileDevice/Provisioning\ Profiles/$TMP_PROV
-        (echo $B64_CERT | base64 --decode) > $TMP_CERT
-        security create-keychain -p $KCPW $KCNAME
-        security list-keychains -d user -s login.keychain $KCNAME
-        security import $TMP_CERT -k $KCNAME -P $P12PW -T /usr/bin/codesign
-        security set-keychain-settings -lut 1000 $KCNAME
-        security unlock-keychain -p $KCPW $KCNAME
-        security set-key-partition-list -S apple-tool:,apple: -s -k $KCPW $KCNAME
-        rm $TMP_CERT
+        ./devops/signing_open.sh $B64_PROV $B64_CERT $P12PW $KCID $KCPW
     - name: Build archive
       run: |
         set -o pipefail && xcodebuild -scheme $SCHEME -sdk iphoneos -configuration $CONFIGURATION archive -archivePath Archive.xcarchive
@@ -45,33 +32,45 @@ jobs:
       env:
         KCID: ${{ secrets.KCID }}
       run: |
-        KCNAME="$KCID.keychain"
-        security list-keychains -d user -s login.keychain
-        security delete-keychain $KCNAME
+        ./devops/signing_close.sh $KCID
     - name: Upload archive
       uses: actions/upload-artifact@v1
       with:
-        name: Archive.xcarchive
+        name: Archive
         path: Archive.xcarchive
 
-#  export:
-#    name: Export ipa
-#    env:
-#
-#    runs-on: macOS-latest
-#    needs: archive
-#    steps:
-#    - name: Download products
-#      uses: actions/download-artifact@v1
-#      with:
-#        name: Archive
-#    - name: Export ipa
-#      run: |
-#        ls -lah
-#        set -o pipefail && xcodebuild -exportArchive -archivePath Archive.xcarchive -exportOptionsPlist exportOptions.plist -exportPath ./build
-#    - name: Upload ipa
-#      uses: actions/upload-artifact@v1
-#      with:
-#        name: App files
-#        path: build
-#
+  export:
+    name: Export ipa
+    runs-on: macOS-latest
+    needs: archive
+    steps:
+    - name: Checkout project
+      uses: actions/checkout@v1
+    - name: Download archive
+      uses: actions/download-artifact@v1
+      with:
+        name: Archive
+    - name: Prepare signing
+      env:
+        B64_PROV: ${{ secrets.B64_PROV_DIST }}
+        B64_CERT: ${{ secrets.B64_CERT_DIST }}
+        P12PW: ${{ secrets.P12PW_DIST }}
+        KCID: ${{ secrets.KCID }}
+        KCPW: ${{ secrets.KCPW }}
+      run: |
+        ./devops/signing_open.sh $B64_PROV $B64_CERT $P12PW $KCID $KCPW
+    - name: Export ipa
+      run: |
+        ls
+        set -o pipefail && xcodebuild -exportArchive -archivePath Archive.xcarchive -exportOptionsPlist ./devops/exportOptions.plist -exportPath ./build
+    - name: Close signing
+      env:
+        KCID: ${{ secrets.KCID }}
+      run: |
+        ./devops/signing_close.sh $KCID
+    - name: Upload ipa
+      uses: actions/upload-artifact@v1
+      with:
+        name: App
+        path: build
+
