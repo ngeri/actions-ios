@@ -6,5 +6,20 @@
 	<string>app-store</string>
 	<key>teamID</key>
 	<string>GV33PCCLKG</string>
+	<key>uploadBitcode</key>
+	<true/>
+	<key>compileBitcode</key>
+	<true/>
+	<key>uploadSymbols</key>
+	<true/>
+	<key>signingStyle</key>
+	<string>manual</string>
+	<key>signingCertificate</key>
+	<string>Apple Distribution: Gergely Nemeth</string>
+	<key>provisioningProfiles</key>
+	<dict>
+		<key>com.gergelynemeth.Actions</key>
+		<string>Actions: AppStore</string>
+	</dict>
 </dict>
 </plist>
