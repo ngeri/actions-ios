@@ -88,16 +88,18 @@ jobs:
       env:
         AC_ISSUER: ${{ secrets.AC_ISSUER }}
         AC_PRIVATE_KEY: ${{ secrets.AC_PRIVATE_KEY }}
+        AC_PRIVATE_KEY_ID: ${{ secrets.AC_PRIVATE_KEY_ID }}
       run: |
         mkdir -p ~/.appstoreconnect/private_keys
-        echo $AC_PRIVATE_KEY > ~/.appstoreconnect/private_keys/AuthKey_WD2464667Z.p8
+        echo $AC_PRIVATE_KEY > ~/.appstoreconnect/private_keys/AuthKey_$AC_PRIVATE_KEY_ID.p8
         ls -lah ~/.appstoreconnect/private_keys
-        xcrun altool --validate-app --file App/Actions.ipa --apiKey WD2464667Z --apiIssuer $AC_ISSUER
+        xcrun altool --validate-app --file $(find . -type f -name "*.ipa") --apiKey $AC_PRIVATE_KEY_ID --apiIssuer $AC_ISSUER
     - name: Upload ipa
       env:
         AC_ISSUER: ${{ secrets.AC_ISSUER }}
         AC_PRIVATE_KEY: ${{ secrets.AC_PRIVATE_KEY }}
+        AC_PRIVATE_KEY_ID: ${{ secrets.AC_PRIVATE_KEY_ID }}
       run: |
         mkdir -p ~/.appstoreconnect/private_keys
-        echo $AC_PRIVATE_KEY > ~/.appstoreconnect/private_keys/AuthKey_WD2464667Z.p8
-        xcrun altool --upload-app --file App/Actions.ipa --apiKey WD2464667Z --apiIssuer $AC_ISSUER
+        echo $AC_PRIVATE_KEY > ~/.appstoreconnect/private_keys/AuthKey_$AC_PRIVATE_KEY_ID.p8
+        xcrun altool --upload-app --file $(find . -type f -name "*.ipa") --apiKey $AC_PRIVATE_KEY_ID --apiIssuer $AC_ISSUER
