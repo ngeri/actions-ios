@@ -86,13 +86,18 @@ jobs:
         name: App
     - name: Validate ipa
       env:
-        AC_API_KEY: ${{ secrets.AC_API_KEY }}
-        AC_API_ISSUER: ${{ secrets.AC_API_ISSUER }}
+        AC_ISSUER: ${{ secrets.AC_ISSUER }}
+        AC_PRIVATE_KEY: ${{ secrets.AC_PRIVATE_KEY }}
       run: |
-        xcrun altool --validate-app --file App --apiKey $AC_API_KEY --apiIssuer $AC_API_ISSUER
+        mkdir -p ~/.appstoreconnect/private_keys
+        echo $AC_PRIVATE_KEY > ~/.appstoreconnect/private_keys/AuthKey_WD2464667Z.p8
+        ls -lah ~/.appstoreconnect/private_keys
+        xcrun altool --validate-app --file App/Actions.ipa --apiKey WD2464667Z --apiIssuer $AC_ISSUER
     - name: Upload ipa
       env:
-        API_KEY: ${{ secrets.API_KEY }}
-        API_ISSUER: ${{ secrets.API_ISSUER }}
+        AC_ISSUER: ${{ secrets.AC_ISSUER }}
+        AC_PRIVATE_KEY: ${{ secrets.AC_PRIVATE_KEY }}
       run: |
-        xcrun altool --upload-app --file App --apiKey $API_KEY --apiIssuer $AC_API_ISSUER
+        mkdir -p ~/.appstoreconnect/private_keys
+        echo $AC_PRIVATE_KEY > ~/.appstoreconnect/private_keys/AuthKey_WD2464667Z.p8
+        xcrun altool --upload-app --file App/Actions.ipa --apiKey WD2464667Z --apiIssuer $AC_ISSUER
