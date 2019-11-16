@@ -92,7 +92,7 @@ jobs:
       run: |
         mkdir -p ~/.appstoreconnect/private_keys
         echo $AC_PRIVATE_KEY > ~/.appstoreconnect/private_keys/AuthKey_$AC_PRIVATE_KEY_ID.p8
-        set -o pipefail && xcrun altool --validate-app --file $(find . -type f -name "*.ipa") --apiKey $AC_PRIVATE_KEY_ID --apiIssuer $AC_ISSUER
+        set -o pipefail && xcrun altool --validate-app --file $(find . -type f -name "*.ipa") --apiKey $AC_PRIVATE_KEY_ID --apiIssuer $AC_ISSUER | xcpretty --color --simple
     - name: Upload ipa
       env:
         AC_ISSUER: ${{ secrets.AC_ISSUER }}
@@ -101,4 +101,4 @@ jobs:
       run: |
         mkdir -p ~/.appstoreconnect/private_keys
         echo $AC_PRIVATE_KEY > ~/.appstoreconnect/private_keys/AuthKey_$AC_PRIVATE_KEY_ID.p8
-        set -o pipefail && xcrun altool --upload-app --file $(find . -type f -name "*.ipa") --apiKey $AC_PRIVATE_KEY_ID --apiIssuer $AC_ISSUER
+        set -o pipefail && xcrun altool --upload-app --file $(find . -type f -name "*.ipa") --apiKey $AC_PRIVATE_KEY_ID --apiIssuer $AC_ISSUER | xcpretty --color --simple
