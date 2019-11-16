@@ -17,14 +17,13 @@ jobs:
     - name: Checkout project
       uses: actions/checkout@v1
     - name: Prepare signing
-      env:
-        B64_PROV: ${{ secrets.B64_PROV_DIST }}
-        B64_CERT: ${{ secrets.B64_CERT_DIST }}
-        P12PW: ${{ secrets.P12PW_DIST }}
-        KCID: ${{ secrets.KCID }}
-        KCPW: ${{ secrets.KCPW }}
-      run: |
-        ./devops/signing_open.sh $B64_PROV $B64_CERT $P12PW $KCID $KCPW
+      uses: ngeri/prepare-signing@master
+      with:
+        b64_prov: ${{ secrets.B64_PROV_DIST }}
+        b64_cert: ${{ secrets.B64_CERT_DIST }}
+        p12_pw: ${{ secrets.P12PW_DIST }}
+        kc_id: ${{ secrets.KCID }}
+        kc_pw: ${{ secrets.KCPW }}
     - name: Build archive
       run: |
         set -o pipefail && xcodebuild -scheme $SCHEME -sdk iphoneos -configuration $CONFIGURATION archive -archivePath Archive.xcarchive | xcpretty --color --simple
@@ -51,14 +50,13 @@ jobs:
       with:
         name: Archive
     - name: Prepare signing
-      env:
-        B64_PROV: ${{ secrets.B64_PROV_DIST }}
-        B64_CERT: ${{ secrets.B64_CERT_DIST }}
-        P12PW: ${{ secrets.P12PW_DIST }}
-        KCID: ${{ secrets.KCID }}
-        KCPW: ${{ secrets.KCPW }}
-      run: |
-        ./devops/signing_open.sh $B64_PROV $B64_CERT $P12PW $KCID $KCPW
+      uses: ngeri/prepare-signing@master
+      with:
+        b64_prov: ${{ secrets.B64_PROV_DIST }}
+        b64_cert: ${{ secrets.B64_CERT_DIST }}
+        p12_pw: ${{ secrets.P12PW_DIST }}
+        kc_id: ${{ secrets.KCID }}
+        kc_pw: ${{ secrets.KCPW }}
     - name: Export ipa
       run: |
         set -o pipefail && xcodebuild -exportArchive -archivePath Archive -exportOptionsPlist ./devops/exportOptions.plist -exportPath ./build | xcpretty --color --simple
