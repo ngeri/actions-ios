@@ -17,7 +17,7 @@ jobs:
     - name: Checkout project
       uses: actions/checkout@v1
     - name: Prepare signing
-      uses: ngeri/prepare-signing@master
+      uses: ngeri/prepare-signing@v1
       with:
         b64_prov: ${{ secrets.B64_PROV_DIST }}
         b64_cert: ${{ secrets.B64_CERT_DIST }}
@@ -45,7 +45,7 @@ jobs:
       with:
         name: Archive
     - name: Prepare signing
-      uses: ngeri/prepare-signing@master
+      uses: ngeri/prepare-signing@v1
       with:
         b64_prov: ${{ secrets.B64_PROV_DIST }}
         b64_cert: ${{ secrets.B64_CERT_DIST }}
