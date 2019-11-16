@@ -27,11 +27,6 @@ jobs:
     - name: Build archive
       run: |
         set -o pipefail && xcodebuild -scheme $SCHEME -sdk iphoneos -configuration $CONFIGURATION archive -archivePath Archive.xcarchive | xcpretty --color --simple
-    - name: Close signing
-      env:
-        KCID: ${{ secrets.KCID }}
-      run: |
-        ./devops/signing_close.sh $KCID
     - name: Upload archive
       uses: actions/upload-artifact@v1
       with:
@@ -60,11 +55,6 @@ jobs:
     - name: Export ipa
       run: |
         set -o pipefail && xcodebuild -exportArchive -archivePath Archive -exportOptionsPlist ./devops/exportOptions.plist -exportPath ./build | xcpretty --color --simple
-    - name: Close signing
-      env:
-        KCID: ${{ secrets.KCID }}
-      run: |
-        ./devops/signing_close.sh $KCID
     - name: Upload ipa
       uses: actions/upload-artifact@v1
       with:
