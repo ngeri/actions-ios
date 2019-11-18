@@ -12,6 +12,7 @@ jobs:
     env:
       CONFIGURATION: "Release"
       SCHEME: "Actions"
+      TARGET: "Actions"
     runs-on: macOS-latest
     steps:
     - name: Checkout project
@@ -24,6 +25,13 @@ jobs:
         p12_pw: ${{ secrets.P12PW_DIST }}
         kc_id: ${{ secrets.KCID }}
         kc_pw: ${{ secrets.KCPW }}
+    - name: Build number bump
+      uses: ngeri/version-bump@master
+      with:
+        appstoreConnectPrivateKey: ${{ secrets.AC_PRIVATE_KEY }}
+        keyID: ${{ secrets.AC_PRIVATE_KEY_ID }}
+        issuerID: ${{ secrets.AC_ISSUER }}
+        targetName: "Actions"
     - name: Build archive
       run: |
         set -o pipefail && xcodebuild -scheme $SCHEME -sdk iphoneos -configuration $CONFIGURATION archive -archivePath Archive.xcarchive | xcpretty --color --simple
