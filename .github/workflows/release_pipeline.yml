@@ -76,7 +76,7 @@ jobs:
     steps:
     - name: Checkout project
       uses: actions/checkout@v1
-    - name: Download archive
+    - name: Download ipa
       uses: actions/download-artifact@v1
       with:
         name: App
