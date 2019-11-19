@@ -71,6 +71,10 @@ jobs:
 
   upload:
     name: Upload ipa
+    env:
+      AC_ISSUER: ${{ secrets.AC_ISSUER }}
+      AC_PRIVATE_KEY: ${{ secrets.AC_PRIVATE_KEY }}
+      AC_PRIVATE_KEY_ID: ${{ secrets.AC_PRIVATE_KEY_ID }}
     runs-on: macOS-latest
     needs: export
     steps:
@@ -80,21 +84,13 @@ jobs:
       uses: actions/download-artifact@v1
       with:
         name: App
-    - name: Validate ipa
-      env:
-        AC_ISSUER: ${{ secrets.AC_ISSUER }}
-        AC_PRIVATE_KEY: ${{ secrets.AC_PRIVATE_KEY }}
-        AC_PRIVATE_KEY_ID: ${{ secrets.AC_PRIVATE_KEY_ID }}
+    - name: Setup App Store Connect authentication
       run: |
         mkdir -p ~/.appstoreconnect/private_keys
         echo $AC_PRIVATE_KEY > ~/.appstoreconnect/private_keys/AuthKey_$AC_PRIVATE_KEY_ID.p8
+    - name: Validate ipa
+      run: |
         set -o pipefail && xcrun altool --validate-app --file $(find . -type f -name "*.ipa") --apiKey $AC_PRIVATE_KEY_ID --apiIssuer $AC_ISSUER | xcpretty --color --simple
     - name: Upload ipa
-      env:
-        AC_ISSUER: ${{ secrets.AC_ISSUER }}
-        AC_PRIVATE_KEY: ${{ secrets.AC_PRIVATE_KEY }}
-        AC_PRIVATE_KEY_ID: ${{ secrets.AC_PRIVATE_KEY_ID }}
       run: |
-        mkdir -p ~/.appstoreconnect/private_keys
-        echo $AC_PRIVATE_KEY > ~/.appstoreconnect/private_keys/AuthKey_$AC_PRIVATE_KEY_ID.p8
         set -o pipefail && xcrun altool --upload-app --file $(find . -type f -name "*.ipa") --apiKey $AC_PRIVATE_KEY_ID --apiIssuer $AC_ISSUER | xcpretty --color --simple
