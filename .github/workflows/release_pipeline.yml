@@ -1,0 +1,95 @@
+name: Release pipeline
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  archive:
+    name: Archive
+    env:
+      CONFIGURATION: "Release"
+      SCHEME: "Actions"
+      TARGET: "Actions"
+    runs-on: macOS-latest
+    steps:
+    - name: Checkout project
+      uses: actions/checkout@v1
+    - name: Prepare signing
+      uses: ngeri/prepare-signing@v1.0.0
+      with:
+        b64_prov: ${{ secrets.B64_PROV_DIST }}
+        b64_cert: ${{ secrets.B64_CERT_DIST }}
+        p12_pw: ${{ secrets.P12PW_DIST }}
+        kc_id: ${{ secrets.KCID }}
+        kc_pw: ${{ secrets.KCPW }}
+    - name: Build number bump
+      uses: ngeri/version-bump@v1.0.0
+      with:
+        appstoreConnectPrivateKey: ${{ secrets.AC_PRIVATE_KEY_HEADER }}
+        keyID: ${{ secrets.AC_PRIVATE_KEY_ID }}
+        issuerID: ${{ secrets.AC_ISSUER }}
+        targetName: "Actions"
+    - name: Build archive
+      run: |
+        set -o pipefail && xcodebuild -scheme $SCHEME -sdk iphoneos -configuration $CONFIGURATION archive -archivePath Archive.xcarchive | xcpretty --color --simple
+    - name: Upload archive
+      uses: actions/upload-artifact@v1
+      with:
+        name: Archive
+        path: Archive.xcarchive
+
+  export:
+    name: Export ipa
+    runs-on: macOS-latest
+    needs: archive
+    steps:
+    - name: Checkout project
+      uses: actions/checkout@v1
+    - name: Download archive
+      uses: actions/download-artifact@v1
+      with:
+        name: Archive
+    - name: Prepare signing
+      uses: ngeri/prepare-signing@v1.0.0
+      with:
+        b64_prov: ${{ secrets.B64_PROV_DIST }}
+        b64_cert: ${{ secrets.B64_CERT_DIST }}
+        p12_pw: ${{ secrets.P12PW_DIST }}
+        kc_id: ${{ secrets.KCID }}
+        kc_pw: ${{ secrets.KCPW }}
+    - name: Export ipa
+      run: |
+        set -o pipefail && xcodebuild -exportArchive -archivePath Archive -exportOptionsPlist ./devops/exportOptions.plist -exportPath ./build | xcpretty --color --simple
+    - name: Upload ipa
+      uses: actions/upload-artifact@v1
+      with:
+        name: App
+        path: build
+
+  upload:
+    name: Upload ipa
+    env:
+      AC_ISSUER: ${{ secrets.AC_ISSUER }}
+      AC_PRIVATE_KEY: ${{ secrets.AC_PRIVATE_KEY }}
+      AC_PRIVATE_KEY_ID: ${{ secrets.AC_PRIVATE_KEY_ID }}
+    runs-on: macOS-latest
+    needs: export
+    steps:
+    - name: Checkout project
+      uses: actions/checkout@v1
+    - name: Download ipa
+      uses: actions/download-artifact@v1
+      with:
+        name: App
+    - name: Setup App Store Connect authentication
+      run: |
+        mkdir -p ~/.appstoreconnect/private_keys
+        echo $AC_PRIVATE_KEY > ~/.appstoreconnect/private_keys/AuthKey_$AC_PRIVATE_KEY_ID.p8
+    - name: Validate ipa
+      run: |
+        set -o pipefail && xcrun altool --validate-app --file $(find . -type f -name "*.ipa") --apiKey $AC_PRIVATE_KEY_ID --apiIssuer $AC_ISSUER | xcpretty --color --simple
+    - name: Upload ipa
+      run: |
+        set -o pipefail && xcrun altool --upload-app --file $(find . -type f -name "*.ipa") --apiKey $AC_PRIVATE_KEY_ID --apiIssuer $AC_ISSUER | xcpretty --color --simple

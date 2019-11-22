@@ -9,6 +9,7 @@
 **/Index/DataStore/
 **/Index.noindex/DataStore/
 **/IDEWorkspaceChecks.plist
+*.xcarchive
 
 ## Various settings
 *.pbxuser
