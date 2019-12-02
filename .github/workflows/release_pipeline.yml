@@ -27,7 +27,7 @@ jobs:
     - name: Build number bump
       uses: ngeri/version-bump@v1.0.0
       with:
-        appstoreConnectPrivateKey: ${{ secrets.AC_PRIVATE_KEY }}
+        appstoreConnectPrivateKey: ${{ secrets.AC_PRIVATE_KEY_HEADER }}
         keyID: ${{ secrets.AC_PRIVATE_KEY_ID }}
         issuerID: ${{ secrets.AC_ISSUER }}
         targetName: "Actions"
