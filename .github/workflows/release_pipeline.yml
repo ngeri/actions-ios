@@ -12,8 +12,10 @@ env:
   APP_BUNDLE_PATH: "./build"
   ARCHIVE_NAME: "Archive"
   ARCHIVE_PATH: "./Archive.xcarchive"
+  BUNDLE_ID: "com.gergelynemeth.Actions"
   CONFIGURATION: "Release"
   SCHEME: "Actions"
+  SIGNING_TYPE: "IOS_APP_STORE"
   TARGET: "Actions"
 
 jobs:
@@ -24,13 +26,15 @@ jobs:
     - name: Checkout project
       uses: actions/checkout@v1
     - name: Prepare signing
-      uses: ngeri/prepare-signing@v1.0.0
+      uses: ngeri/prepare-signing@master
       with:
-        b64_prov: ${{ secrets.B64_PROV_DIST }}
-        b64_cert: ${{ secrets.B64_CERT_DIST }}
-        p12_pw: ${{ secrets.P12PW_DIST }}
-        kc_id: ${{ secrets.KCID }}
-        kc_pw: ${{ secrets.KCPW }}
+        appStoreConnectPrivateKey: ${{ secrets.AC_PRIVATE_KEY }}
+        keyID: ${{ env.AC_PRIVATE_KEY_ID }}
+        issuerID: ${{ env.AC_ISSUER }}
+        base64P12File: ${{ secrets.B64_CERT_DIST }}
+        p12Password: ${{ secrets.P12PW_DIST }}
+        bundleIdentifier: ${{ env.BUNDLE_ID }}
+        signType: ${{ env.SIGNING_TYPE }}
     - name: Build number bump
       uses: ngeri/version-bump@master
       with:
@@ -59,13 +63,15 @@ jobs:
       with:
         name: ${{ env.ARCHIVE_NAME }}
     - name: Prepare signing
-      uses: ngeri/prepare-signing@v1.0.0
+      uses: ngeri/prepare-signing@master
       with:
-        b64_prov: ${{ secrets.B64_PROV_DIST }}
-        b64_cert: ${{ secrets.B64_CERT_DIST }}
-        p12_pw: ${{ secrets.P12PW_DIST }}
-        kc_id: ${{ secrets.KCID }}
-        kc_pw: ${{ secrets.KCPW }}
+        appStoreConnectPrivateKey: ${{ secrets.AC_PRIVATE_KEY }}
+        keyID: ${{ env.AC_PRIVATE_KEY_ID }}
+        issuerID: ${{ env.AC_ISSUER }}
+        base64P12File: ${{ secrets.B64_CERT_DIST }}
+        p12Password: ${{ secrets.P12PW_DIST }}
+        bundleIdentifier: ${{ env.BUNDLE_ID }}
+        signType: ${{ env.SIGNING_TYPE }}
     - name: Export ipa
       run: |
         set -o pipefail && xcodebuild -exportArchive -archivePath $ARCHIVE_NAME -exportOptionsPlist ./devops/exportOptions.plist -exportPath $APP_BUNDLE_PATH
