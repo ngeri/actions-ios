@@ -19,7 +19,7 @@
 	<key>provisioningProfiles</key>
 	<dict>
 		<key>com.gergelynemeth.Actions</key>
-		<string>Actions: AppStore</string>
+		<string>Actions - AppStore</string>
 	</dict>
 </dict>
 </plist>
