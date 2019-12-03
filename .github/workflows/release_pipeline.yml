@@ -7,7 +7,9 @@ on:
 
 env:
   AC_ISSUER: "093b7a6a-8833-4791-82d5-3f4ac31c6444"
-  AC_PRIVATE_KEY_ID: "RXMK9933VC"
+  AC_PRIVATE_KEY_ID: "965RP3TSVC"
+  APP_BUNDLE_NAME: "App"
+  APP_BUNDLE_PATH: "./build"
   ARCHIVE_NAME: "Archive"
   ARCHIVE_PATH: "./Archive.xcarchive"
   CONFIGURATION: "Release"
@@ -33,9 +35,9 @@ jobs:
       uses: ngeri/version-bump@master
       with:
         appstoreConnectPrivateKey: ${{ secrets.AC_PRIVATE_KEY }}
-        keyID: "RXMK9933VC"
-        issuerID: "093b7a6a-8833-4791-82d5-3f4ac31c6444"
-        targetName: "Actions"
+        keyID: ${{ env.AC_PRIVATE_KEY_ID }}
+        issuerID: ${{ env.AC_ISSUER }}
+        targetName: ${{ env.TARGET }}
     - name: Build archive
       run: |
         set -o pipefail && xcodebuild -scheme $SCHEME -sdk iphoneos -configuration $CONFIGURATION archive -archivePath $ARCHIVE_PATH
@@ -66,12 +68,12 @@ jobs:
         kc_pw: ${{ secrets.KCPW }}
     - name: Export ipa
       run: |
-        set -o pipefail && xcodebuild -exportArchive -archivePath $ARCHIVE_NAME -exportOptionsPlist ./devops/exportOptions.plist -exportPath ./build
+        set -o pipefail && xcodebuild -exportArchive -archivePath $ARCHIVE_NAME -exportOptionsPlist ./devops/exportOptions.plist -exportPath $APP_BUNDLE_PATH
     - name: Upload ipa
       uses: actions/upload-artifact@v1
       with:
-        name: App
-        path: build
+        name: ${{ env.APP_BUNDLE_NAME }}
+        path: ${{ env.APP_BUNDLE_PATH }}
 
   upload:
     name: Upload ipa
@@ -83,18 +85,13 @@ jobs:
     - name: Download ipa
       uses: actions/download-artifact@v1
       with:
-        name: App
+        name: ${{ env.APP_BUNDLE_NAME }}
     - name: Setup App Store Connect authentication
       env:
         AC_PRIVATE_KEY: ${{ secrets.AC_PRIVATE_KEY }}
       run: |
         mkdir -p ./private_keys
         echo "$AC_PRIVATE_KEY" > ./private_keys/AuthKey_$AC_PRIVATE_KEY_ID.p8
-    - name: Upload ipa
-      uses: actions/upload-artifact@v1
-      with:
-        name: Key
-        path: private_keys
     - name: Validate ipa
       run: |
         set -o pipefail && xcrun altool --validate-app --file $(find . -type f -name "*.ipa") --apiKey $AC_PRIVATE_KEY_ID --apiIssuer $AC_ISSUER | xcpretty --color --simple
