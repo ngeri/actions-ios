@@ -10,7 +10,7 @@ env:
   SCHEME: "Actions"
   TARGET: "Actions"
   AC_PRIVATE_KEY_ID: "VZPQ6J765R"
-  AC_ISSUER: ""
+  AC_ISSUER: "093b7a6a-8833-4791-82d5-3f4ac31c6444"
 
 jobs:
   archive:
