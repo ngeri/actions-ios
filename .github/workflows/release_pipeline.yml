@@ -96,8 +96,8 @@ jobs:
       env:
         AC_PRIVATE_KEY: ${{ secrets.AC_PRIVATE_KEY }}
       run: |
-        mkdir -p ./private_keys
-        echo "$AC_PRIVATE_KEY" > ./private_keys/AuthKey_$AC_PRIVATE_KEY_ID.p8
+        mkdir -p ~/.appstoreconnect/private_keys
+        echo "$AC_PRIVATE_KEY" > ~/.appstoreconnect/private_keys/AuthKey_$AC_PRIVATE_KEY_ID.p8
     - name: Validate ipa
       run: |
         set -o pipefail && xcrun altool --validate-app --file $(find . -type f -name "*.ipa") --apiKey $AC_PRIVATE_KEY_ID --apiIssuer $AC_ISSUER | xcpretty --color --simple
