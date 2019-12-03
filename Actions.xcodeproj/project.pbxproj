@@ -448,7 +448,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.gergelynemeth.Actions;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Actions: Development";
+				PROVISIONING_PROFILE_SPECIFIER = "Actions - Development";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -468,7 +468,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.gergelynemeth.Actions;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Actions: AppStore";
+				PROVISIONING_PROFILE_SPECIFIER = "Actions - App Store";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
