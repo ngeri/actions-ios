@@ -6,11 +6,13 @@ on:
       - master
 
 env:
+  AC_ISSUER: "093b7a6a-8833-4791-82d5-3f4ac31c6444"
+  AC_PRIVATE_KEY_ID: "VZPQ6J765R"
+  ARCHIVE_NAME: "Archive"
+  ARCHIVE_PATH: "./Archive.xcarchive"
   CONFIGURATION: "Release"
   SCHEME: "Actions"
   TARGET: "Actions"
-  AC_PRIVATE_KEY_ID: "VZPQ6J765R"
-  AC_ISSUER: "093b7a6a-8833-4791-82d5-3f4ac31c6444"
 
 jobs:
   archive:
@@ -36,12 +38,12 @@ jobs:
         targetName: ${{ env.TARGET }}
     - name: Build archive
       run: |
-        set -o pipefail && xcodebuild -scheme $SCHEME -sdk iphoneos -configuration $CONFIGURATION archive -archivePath Archive.xcarchive
+        set -o pipefail && xcodebuild -scheme $SCHEME -sdk iphoneos -configuration $CONFIGURATION archive -archivePath $ARCHIVE_PATH
     - name: Upload archive
       uses: actions/upload-artifact@v1
       with:
-        name: Archive
-        path: Archive.xcarchive
+        name: ${{ env.ARCHIVE_NAME }}
+        path: ${{ env.ARCHIVE_PATH }}
 
   export:
     name: Export ipa
@@ -53,7 +55,7 @@ jobs:
     - name: Download archive
       uses: actions/download-artifact@v1
       with:
-        name: Archive
+        name: ${{ env.ARCHIVE_NAME }}
     - name: Prepare signing
       uses: ngeri/prepare-signing@v1.0.0
       with:
@@ -64,7 +66,7 @@ jobs:
         kc_pw: ${{ secrets.KCPW }}
     - name: Export ipa
       run: |
-        set -o pipefail && xcodebuild -exportArchive -archivePath Archive -exportOptionsPlist ./devops/exportOptions.plist -exportPath ./build
+        set -o pipefail && xcodebuild -exportArchive -archivePath $ARCHIVE_NAME -exportOptionsPlist ./devops/exportOptions.plist -exportPath ./build
     - name: Upload ipa
       uses: actions/upload-artifact@v1
       with:
