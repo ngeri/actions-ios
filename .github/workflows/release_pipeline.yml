@@ -87,7 +87,7 @@ jobs:
         AC_PRIVATE_KEY: ${{ secrets.AC_PRIVATE_KEY }}
       run: |
         mkdir -p ./private_keys
-        echo $AC_PRIVATE_KEY > ./private_keys/AuthKey_$AC_PRIVATE_KEY_ID.p8
+        echo "$AC_PRIVATE_KEY" > ./private_keys/AuthKey_$AC_PRIVATE_KEY_ID.p8
     - name: Upload ipa
       uses: actions/upload-artifact@v1
       with:
