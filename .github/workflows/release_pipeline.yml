@@ -26,19 +26,21 @@ jobs:
     - name: Checkout project
       uses: actions/checkout@v1
     - name: Prepare signing
-      uses: ngeri/prepare-signing@master
+      uses: ngeri/prepare-signing@v1.0.1
       with:
         appStoreConnectPrivateKey: ${{ secrets.AC_PRIVATE_KEY }}
         keyID: ${{ env.AC_PRIVATE_KEY_ID }}
         issuerID: ${{ env.AC_ISSUER }}
+        keychainName: ${{ secrets.KCID }}
+        keychainPassword: ${{ secrets.KCPW }}
         base64P12File: ${{ secrets.B64_CERT_DIST }}
         p12Password: ${{ secrets.P12PW_DIST }}
         bundleIdentifier: ${{ env.BUNDLE_ID }}
         signType: ${{ env.SIGNING_TYPE }}
     - name: Build number bump
-      uses: ngeri/version-bump@master
+      uses: ngeri/version-bump@v1.0.1
       with:
-        appstoreConnectPrivateKey: ${{ secrets.AC_PRIVATE_KEY }}
+        appStoreConnectPrivateKey: ${{ secrets.AC_PRIVATE_KEY }}
         keyID: ${{ env.AC_PRIVATE_KEY_ID }}
         issuerID: ${{ env.AC_ISSUER }}
         targetName: ${{ env.TARGET }}
@@ -63,11 +65,13 @@ jobs:
       with:
         name: ${{ env.ARCHIVE_NAME }}
     - name: Prepare signing
-      uses: ngeri/prepare-signing@master
+      uses: ngeri/prepare-signing@v1.0.1
       with:
         appStoreConnectPrivateKey: ${{ secrets.AC_PRIVATE_KEY }}
         keyID: ${{ env.AC_PRIVATE_KEY_ID }}
         issuerID: ${{ env.AC_ISSUER }}
+        keychainName: ${{ secrets.KCID }}
+        keychainPassword: ${{ secrets.KCPW }}
         base64P12File: ${{ secrets.B64_CERT_DIST }}
         p12Password: ${{ secrets.P12PW_DIST }}
         bundleIdentifier: ${{ env.BUNDLE_ID }}
