@@ -31,9 +31,9 @@ jobs:
       uses: ngeri/version-bump@v1.0.0
       with:
         appstoreConnectPrivateKey: ${{ secrets.AC_PRIVATE_KEY }}
-        keyID: $AC_PRIVATE_KEY_ID
-        issuerID: $AC_ISSUER
-        targetName: $TARGET
+        keyID: ${{ AC_PRIVATE_KEY_ID }}
+        issuerID: ${{ AC_ISSUER }}
+        targetName: ${{ TARGET }}
     - name: Build archive
       run: |
         set -o pipefail && xcodebuild -scheme $SCHEME -sdk iphoneos -configuration $CONFIGURATION archive -archivePath Archive.xcarchive
