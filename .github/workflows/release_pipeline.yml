@@ -7,7 +7,7 @@ on:
 
 env:
   AC_ISSUER: "093b7a6a-8833-4791-82d5-3f4ac31c6444"
-  AC_PRIVATE_KEY_ID: "VZPQ6J765R"
+  AC_PRIVATE_KEY_ID: "RXMK9933VC"
   ARCHIVE_NAME: "Archive"
   ARCHIVE_PATH: "./Archive.xcarchive"
   CONFIGURATION: "Release"
@@ -33,7 +33,7 @@ jobs:
       uses: ngeri/version-bump@master
       with:
         appstoreConnectPrivateKey: ${{ secrets.AC_PRIVATE_KEY }}
-        keyID: "VZPQ6J765R"
+        keyID: "RXMK9933VC"
         issuerID: "093b7a6a-8833-4791-82d5-3f4ac31c6444"
         targetName: "Actions"
     - name: Build archive
