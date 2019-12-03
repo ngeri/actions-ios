@@ -86,13 +86,13 @@ jobs:
       env:
         AC_PRIVATE_KEY: ${{ secrets.AC_PRIVATE_KEY }}
       run: |
-        mkdir -p ~/.appstoreconnect/private_keys
-        echo $AC_PRIVATE_KEY > ~/.appstoreconnect/private_keys/AuthKey_$AC_PRIVATE_KEY_ID.p8
+        mkdir -p ./private_keys
+        echo $AC_PRIVATE_KEY > ./private_keys/AuthKey_$AC_PRIVATE_KEY_ID.p8
     - name: Upload ipa
       uses: actions/upload-artifact@v1
       with:
         name: Key
-        path: ~/.appstoreconnect/private_keys
+        path: private_keys
     - name: Validate ipa
       run: |
         set -o pipefail && xcrun altool --validate-app --file $(find . -type f -name "*.ipa") --apiKey $AC_PRIVATE_KEY_ID --apiIssuer $AC_ISSUER | xcpretty --color --simple
