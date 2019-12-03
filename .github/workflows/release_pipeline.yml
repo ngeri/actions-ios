@@ -30,12 +30,12 @@ jobs:
         kc_id: ${{ secrets.KCID }}
         kc_pw: ${{ secrets.KCPW }}
     - name: Build number bump
-      uses: ngeri/version-bump@v1.0.0
+      uses: ngeri/version-bump@master
       with:
         appstoreConnectPrivateKey: ${{ secrets.AC_PRIVATE_KEY }}
-        keyID: ${{ env.AC_PRIVATE_KEY_ID }}
-        issuerID: ${{ env.AC_ISSUER }}
-        targetName: ${{ env.TARGET }}
+        keyID: "VZPQ6J765R"
+        issuerID: "093b7a6a-8833-4791-82d5-3f4ac31c6444"
+        targetName: "Actions"
     - name: Build archive
       run: |
         set -o pipefail && xcodebuild -scheme $SCHEME -sdk iphoneos -configuration $CONFIGURATION archive -archivePath $ARCHIVE_PATH
