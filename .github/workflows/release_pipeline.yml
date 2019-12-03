@@ -5,13 +5,16 @@ on:
     branches:
       - master
 
+env:
+  CONFIGURATION: "Release"
+  SCHEME: "Actions"
+  TARGET: "Actions"
+  AC_PRIVATE_KEY_ID: "VZPQ6J765R"
+  AC_ISSUER: ""
+
 jobs:
   archive:
     name: Archive
-    env:
-      CONFIGURATION: "Release"
-      SCHEME: "Actions"
-      TARGET: "Actions"
     runs-on: macOS-latest
     steps:
     - name: Checkout project
@@ -27,13 +30,13 @@ jobs:
     - name: Build number bump
       uses: ngeri/version-bump@v1.0.0
       with:
-        appstoreConnectPrivateKey: ${{ secrets.AC_PRIVATE_KEY_HEADER }}
+        appstoreConnectPrivateKey: ${{ secrets.AC_PRIVATE_KEY }}
         keyID: ${{ secrets.AC_PRIVATE_KEY_ID }}
         issuerID: ${{ secrets.AC_ISSUER }}
         targetName: "Actions"
     - name: Build archive
       run: |
-        set -o pipefail && xcodebuild -scheme $SCHEME -sdk iphoneos -configuration $CONFIGURATION archive -archivePath Archive.xcarchive | xcpretty --color --simple
+        set -o pipefail && xcodebuild -scheme $SCHEME -sdk iphoneos -configuration $CONFIGURATION archive -archivePath Archive.xcarchive
     - name: Upload archive
       uses: actions/upload-artifact@v1
       with:
@@ -61,7 +64,7 @@ jobs:
         kc_pw: ${{ secrets.KCPW }}
     - name: Export ipa
       run: |
-        set -o pipefail && xcodebuild -exportArchive -archivePath Archive -exportOptionsPlist ./devops/exportOptions.plist -exportPath ./build | xcpretty --color --simple
+        set -o pipefail && xcodebuild -exportArchive -archivePath Archive -exportOptionsPlist ./devops/exportOptions.plist -exportPath ./build
     - name: Upload ipa
       uses: actions/upload-artifact@v1
       with:
@@ -70,10 +73,6 @@ jobs:
 
   upload:
     name: Upload ipa
-    env:
-      AC_ISSUER: ${{ secrets.AC_ISSUER }}
-      AC_PRIVATE_KEY: ${{ secrets.AC_PRIVATE_KEY }}
-      AC_PRIVATE_KEY_ID: ${{ secrets.AC_PRIVATE_KEY_ID }}
     runs-on: macOS-latest
     needs: export
     steps:
@@ -84,6 +83,8 @@ jobs:
       with:
         name: App
     - name: Setup App Store Connect authentication
+      env:
+        AC_PRIVATE_KEY: ${{ secrets.AC_PRIVATE_KEY }}
       run: |
         mkdir -p ~/.appstoreconnect/private_keys
         echo $AC_PRIVATE_KEY > ~/.appstoreconnect/private_keys/AuthKey_$AC_PRIVATE_KEY_ID.p8
