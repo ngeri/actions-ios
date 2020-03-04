@@ -26,7 +26,7 @@ jobs:
     - name: Checkout project
       uses: actions/checkout@v1
     - name: Prepare signing
-      uses: ngeri/prepare-signing@v1.0.1
+      uses: ngeri/prepare-signing@v1.0.2
       with:
         appStoreConnectPrivateKey: ${{ secrets.AC_PRIVATE_KEY }}
         keyID: ${{ env.AC_PRIVATE_KEY_ID }}
@@ -65,7 +65,7 @@ jobs:
       with:
         name: ${{ env.ARCHIVE_NAME }}
     - name: Prepare signing
-      uses: ngeri/prepare-signing@v1.0.1
+      uses: ngeri/prepare-signing@v1.0.2
       with:
         appStoreConnectPrivateKey: ${{ secrets.AC_PRIVATE_KEY }}
         keyID: ${{ env.AC_PRIVATE_KEY_ID }}
